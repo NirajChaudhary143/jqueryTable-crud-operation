@@ -1,14 +1,23 @@
 <html lang="en">
 <head>
     <title>Laravel DataTables Tutorial Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
         
 </head>
       <body>
-        
+      @if(session()->has('fail'))
+   <div class="alert alert-danger">
+      {{ session('fail') }}
+   </div>
+   @elseif(session()->has('success'))
+   <div class="alert alert-danger">
+      {{ session('success') }}
+   </div>
+@endif
          <div class="container">
-               <h2>Prosucts Table</h2>
-            <table class="table table-bordered" id="table">
+               <h2>Admin Table</h2>
+            <table class="table table-bordered" style="text-align: center;" id="table">
                <thead>
                   <tr>
                      <th>S.N.</th>
@@ -17,6 +26,7 @@
                      <th>Email</th>
                      <th>Phone</th>
                      <th>Image</th>
+                     <th>Action</th>
                   </tr>
                </thead>
                @foreach($data as $item)
@@ -28,6 +38,10 @@
                         <td>{{$item->phone_number}}</td>
                         <!-- <td>{{$item->image}}</td> -->
                         <td><img src="{{ asset($item->image) }}" width="50" height="50" alt="image"></td>
+                        <td>
+                           <a href="{{route('edit.form',[ 'id' =>$item->id])}}" class="btn btn-primary">Edit</a>
+                           <a href="#" class="btn btn-danger">Delete</a>
+                        </td>
                     </tr>
                 @endforeach
 

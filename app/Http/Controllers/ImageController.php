@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FileUpload;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class ImageController extends Controller
 {
@@ -38,4 +39,40 @@ class ImageController extends Controller
     //     // return Datatables::of(FileUpload::query())->make(true);
     //     return Datatables::of(FileUpload::query())->make(true);
     // }
+
+    public function editForm($id)
+    {
+        $editData = FileUpload::find($id);
+        $data = FileUpload::all();
+        if ($editData) {
+            return view('editForm', compact('editData'));
+        } else {
+            return redirect('/display')->with(['data' => $data, 'fail' => 'The Id you have entered is not on record']);
+        }
+    }
+    
+    
+
+    public function updateData(Request $request,$id){
+            $requestData = $request->all();
+            $fileName = time().'-niraj.'.$request->file('image')->getClientOriginalExtension();
+            $path = $request->file('image')->storeAs('uploads',$fileName,'public');
+            $databaseData= FileUpload::find($id);
+            $requestData['image']='/storage/'.$path;
+            // // echo $requestData['email'];
+            // if($requestData['email'] == $databaseData->email){
+            //     unset($requestData['email']); // remove the request data to avoid updating it
+            // }
+            // $databaseData->update($requestData);
+            $databaseData->name = $requestData['name'];
+            $databaseData->email = $requestData['email'];
+            $databaseData->image = $requestData['image'];
+            $databaseData->phone_number = $requestData['phone_number'];
+            $databaseData->save();
+            
+
+            return redirect('/display')->with('success','Detail Updated');
+            
+
+    }
 }

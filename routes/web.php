@@ -18,4 +18,6 @@ Route::get('/',[ImageController::class,'index'] );
 Route::post('/',[ImageController::class,'imageUpload'] )->name('image.upload');
 Route::get('/display',[ImageController::class,'display'] )->name('display');
 Route::get('/get-data',[ImageController::class,'getData'] )->name('get.data');
+Route::get('/edit/{id}',[ImageController::class,'editForm'] )->name('edit.form');
+Route::post('/edit/{id}',[ImageController::class,'updateData'] )->name('update.data');
 
